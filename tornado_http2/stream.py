@@ -222,6 +222,7 @@ class Stream(object):
             if future is None:
                 self._send_window_update(len(frame.data))
             else:
+                future = gen.convert_yielded(future)
                 IOLoop.current().add_future(
                     future, lambda f: self._send_window_update(len(frame.data)))
         self._maybe_end_stream(frame.flags)
